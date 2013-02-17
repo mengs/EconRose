@@ -1,7 +1,11 @@
 EconRose
 ========
 
-/*   Data Vizualization Project  Economy Rosalization @    
+/*  @@@ Economy Rosalization @@@
 Meng Shi Feb 16, 2013  lolaee@gmail.com   
-Project2 for course Interactive Art and Computational Design  
+
+Project2 : Data Vizualization 
+for 51-882: Interactive Art and Computational Design
 by Prof Golan Levin @ CMU School of Art  */
+
+Tools: Processing
