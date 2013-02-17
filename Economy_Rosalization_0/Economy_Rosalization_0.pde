@@ -30,7 +30,7 @@ int rowCount;
 int colCount;
 
 void setup() { 
-  size(600, 600);
+  size(9400, 800);
   background(255);
   smooth();
   noLoop();
@@ -70,19 +70,19 @@ void draw() {
     if (i==4) {
       println(a+","+b+","+ c+","+  d+","+ e);
     } 
-    countriesRoses[i]=new RoseLine(a, b, c, d, e, angNoiseList);
+    countriesRoses[i]=new RoseLine(300,300,a, b, c, d, e, angNoiseList);
   }
 
-  //  for (int i=0; i<186; i++) {
-  //    countriesRoses[i].drawRose();
-  //    println(countries[i]);
-  //  }
+    for (int i=0; i<186; i++) {
+      countriesRoses[i].drawRose();
+      println(countries[i]);
+   }
   //  countriesRoses[15].drawRose();
   //  println(countries[15]);
 
-
-  countriesRoses[177].drawRose();
-  println(countries[177]);
+//
+//  countriesRoses[177].drawRose();
+//  println(countries[177]);
   
 }
 

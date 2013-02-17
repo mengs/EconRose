@@ -3,6 +3,7 @@
 class RoseLine {
 
   float x, y, lastx, lasty;
+  float posx, posy;// define drawing prosition
   float thisRadius;
   float radius;
   float radiusNoise;
@@ -23,7 +24,9 @@ class RoseLine {
    float ampvarAngLength=random(5000, 15000);
    */
 
-  RoseLine( float a, float b, float c, float d, float e, float[] f) {
+  RoseLine( float _posx, float _posy, float a, float b, float c, float d, float e, float[] f) {
+    posx= _posx;
+    posy= _posy;
     radiusNoise=a;
     ampvarNoise=b;
     ampvarRadius=c;
@@ -43,13 +46,16 @@ class RoseLine {
       radiusNoise+=ampvarRadiusNoise;
       thisRadius=radius+angNoise[ang]*ampvarNoise-100;
       float rad=radians(ang);
-      x=width/2+(thisRadius*cos(rad));
-      y=height/2+(thisRadius*sin(rad));
+      pushMatrix();
+      translate(posx, posy);
+      x=100+(thisRadius*cos(rad));
+      y=100+(thisRadius*sin(rad));
       if (lastx>-999) {
         line(x, y, lastx, lasty);
       }
       lastx=x;
       lasty=y;
+      popMatrix();
     }
   }
 }
