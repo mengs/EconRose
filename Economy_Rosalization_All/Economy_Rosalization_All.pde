@@ -14,6 +14,7 @@
 import controlP5.*;
 ControlP5 cp5;
 FloatTable data;
+PFont p = createFont("Trebuchet", 9);
 
 RoseLine[] countriesRoses=new RoseLine[186];
 String[] countries=new String[186];
@@ -60,7 +61,7 @@ void setup() {
   cp5 = new ControlP5(this);
 
   // change the default font to arial
-  PFont p = createFont("Trebuchet", 9);
+
   cp5.setControlFont(p);
 
   cp5.addTextfield("query")
@@ -249,7 +250,7 @@ void draw() {
     ellipse(35, posy+100, 5, 5);
     ellipse(width-35, posy+100, 5, 5);
     ellipse(mx, posy+100, 5, 5);
-    textAlign(CENTER, CENTER);
+//    textAlign(CENTER, CENTER);
     textSize(13);
     text("A", 20, posy+100);
     text("Z", width-20, posy+100);
@@ -259,6 +260,7 @@ void draw() {
 
     line(35, posy+100, width-35, posy+100);
     countriesRoses[int(pointer)].drawRose(posx, posy);
+    textFont(p);
   }
   if (Golbal_Economy_Rosalization==true) {
     fill(myColor);
@@ -268,68 +270,70 @@ void draw() {
     pushMatrix();
     translate(width-250, 50);
     int lineheight=15;
-    String[] aboutString= {"Golbal Economy Rosalization", "", "Visualizting Golbal Economy","in Terms of Rose-like Line Sketch","",
-        "Data Source", "  October 2012 World Economic Outlook ", "  IMF http://www.imf.org/", "", 
-      "Data Units:", "  GDP", "  Inflation", "  Population", "  Government Revenue ", "","Total sample","  185 Countries","","A Data Generative Art Project", "Spring 2013 IACD@CMU","Source Code","https://github.com/mengs/EconRose"};
-        for (int i=0;i<aboutString.length;i++) {
-        text(aboutString[i], 10, 50+lineheight*i);
-      }
-      popMatrix();
+    String[] aboutString= {
+      "Golbal Economy Rosalization", "", "Visualizting Golbal Economy", "in Terms of Rose-like Line Sketch", "", 
+      "Data Source", "  October 2012 World Economic Outlook ", "  IMF http://www.imf.org/", "", 
+      "Data Units:", "  GDP", "  Inflation", "  Population", "  Government Revenue ", "", "Total sample", "  185 Countries", "", "A Data Generative Art Project", "Spring 2013 IACD@CMU", "Source Code", "https://github.com/mengs/EconRose"
+    };
+    for (int i=0;i<aboutString.length;i++) {
+      text(aboutString[i], 10, 50+lineheight*i);
     }
-
-
-    int queryIndex;
-    query=cp5.get(Textfield.class, "query").getText();
-
-    for (int i=0;i<countries.length;i++) {
-      if (countries[i].equals(query)) {
-        showAll=false;
-        scroll=false;
-        sparkling=false;
-        one=false;
-        Golbal_Economy_Rosalization=false;
-
-        queryIndex=i;
-        //      print(queryIndex);
-        posx=width/2-100;
-        posy=height/2-100;
-
-        stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
-        countriesRoses[queryIndex].drawRose(posx, posy);
-      }
-    }
-  }
-  /* This is a sample numbers helps translate the order of magnitude in the data
-   float radiusNoise=random(10); a 
-   float ampvarNoise=random(290);b 
-   float ampvarRadius=random(0.0, 0.05); c 
-   float ampvarRadiusNoise=random(0.25); d 
-   float ampvarAngLength=random(5000, 15000); e
-   */
-  void mousePressed() {
-    next();
-    redraw();
-    query=cp5.get(Textfield.class, "query").getText();
+    popMatrix();
   }
 
-  public void next() {
-    cp5.get(Textfield.class, "query").clear();
-  }
-  public void controlEvent(ControlEvent theEvent) {
-    n = 0;
-    if (Golbal_Economy_Rosalization==true) {
 
+  int queryIndex;
+  query=cp5.get(Textfield.class, "query").getText();
+
+  for (int i=0;i<countries.length;i++) {
+    if (countries[i].equals(query)) {
       showAll=false;
       scroll=false;
       sparkling=false;
       one=false;
+      Golbal_Economy_Rosalization=false;
 
-      c1 = c2;
-      c2 = color(60);
-    }
-    else {
-      c1 = c2;
-      c2 = color(0, 160, 100);
+      queryIndex=i;
+      //      print(queryIndex);
+      posx=width/2-100;
+      posy=height/2-100;
+
+      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
+      countriesRoses[queryIndex].drawRose(posx, posy);
     }
   }
+}
+/* This is a sample numbers helps translate the order of magnitude in the data
+ float radiusNoise=random(10); a 
+ float ampvarNoise=random(290);b 
+ float ampvarRadius=random(0.0, 0.05); c 
+ float ampvarRadiusNoise=random(0.25); d 
+ float ampvarAngLength=random(5000, 15000); e
+ */
+void mousePressed() {
+  next();
+  redraw();
+  query=cp5.get(Textfield.class, "query").getText();
+}
+
+public void next() {
+  cp5.get(Textfield.class, "query").clear();
+}
+public void controlEvent(ControlEvent theEvent) {
+  n = 0;
+  if (Golbal_Economy_Rosalization==true) {
+
+    showAll=false;
+    scroll=false;
+    sparkling=false;
+    one=false;
+
+    c1 = c2;
+    c2 = color(60);
+  }
+  else {
+    c1 = c2;
+    c2 = color(0, 160, 100);
+  }
+}
 
