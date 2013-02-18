@@ -96,8 +96,8 @@ void draw() {
   //  countriesRoses[177].drawRose();
   //  println(countries[177]);
   // Exit the program 
-  println("Finished.");
-  exit();
+//  println("Finished.");
+//  exit();
 }
 
 /* This is a sample numbers helps translate the order of magnitude in the data

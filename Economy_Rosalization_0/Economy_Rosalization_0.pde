@@ -10,6 +10,8 @@
  by Prof Golan Levin @ CMU School of Art
  */
 
+import processing.pdf.*;
+
 FloatTable data;
 
 RoseLine[] countriesRoses=new RoseLine[186];
@@ -29,12 +31,20 @@ float[] angNoiseList= new float[15000];
 int rowCount;
 int colCount;
 
+// position related variables
+int posx;
+int posy;
+
 void setup() { 
-  size(9400, 800);
+
+  //  size(19000, 1200, PDF, "file.pdf");
+  size(1280, 720, PDF, "file.pdf");
   background(255);
   smooth();
-  noLoop();
+
   //arbituary number not related to data but determine the angle spiral turned
+  posx=0;
+  posy=0;
 }
 
 //begin generate flower for each country
@@ -48,7 +58,7 @@ void draw() {
   data = new FloatTable("roseEcon.txt");
 
   for (int i=0; i<186; i++) {
-    
+
     countries[i]=data.getRowName(i);
     float a= map(data.getFloat(i, 3), data.getColumnMin(3), data.getColumnMax(3), 0, 20); // Government Revenue
     float b= map(data.getFloat(i, 1), data.getColumnMin(1), data.getColumnMax(1), 0, 95000); //inflation
@@ -70,20 +80,30 @@ void draw() {
     if (i==4) {
       println(a+","+b+","+ c+","+  d+","+ e);
     } 
-    countriesRoses[i]=new RoseLine(300,300,a, b, c, d, e, angNoiseList);
+//    if (keyPressed == true && keyCode == UP) {
+//      posx= 100+ int((i%62)) * (width-200)/62; // width-200=2*9400
+//      posy= 100+ int((i/62))* (height-300)/3; // height-300=900
+//    }
+//    else {
+      posx=1280/2-100;
+      posy=720/2-100;
+//    }
+    countriesRoses[i]=new RoseLine(posx, posy, a, b, c, d, e, angNoiseList);
   }
 
-    for (int i=0; i<186; i++) {
-      countriesRoses[i].drawRose();
-      println(countries[i]);
-   }
+  for (int i=0; i<186; i++) {
+    countriesRoses[i].drawRose();
+    println(countries[i]);
+  }
   //  countriesRoses[15].drawRose();
   //  println(countries[15]);
 
-//
-//  countriesRoses[177].drawRose();
-//  println(countries[177]);
-  
+  //
+  //  countriesRoses[177].drawRose();
+  //  println(countries[177]);
+  // Exit the program 
+   println("Finished.");
+   exit();
 }
 
 /* This is a sample numbers helps translate the order of magnitude in the data
@@ -93,4 +113,3 @@ void draw() {
  float ampvarRadiusNoise=random(0.25); d 
  float ampvarAngLength=random(5000, 15000); e
  */
-
