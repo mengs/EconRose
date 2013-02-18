@@ -40,7 +40,10 @@ String query = "";
 
 // Show all or not to show
 boolean  showAll = false;
-boolean  addUp = false;
+boolean  sparkling = false;
+boolean  one = false;
+boolean  scroll = false;
+
 
 void setup() { 
 
@@ -53,14 +56,22 @@ void setup() {
       .setSize(180, 30)
         .setFont(font)
           .setFocus(true)
-            .setColor(color(255))
-              ;
+            //            .setColor(0xbbff0000)
+            .setColorBackground(0xffffffff)
+              .setColorForeground(0xffccffff)
+                .setColorActive(0xffccffff)
+                  .setColorValue(0x0000000)
+
+                    ;
 
 
-  cp5.addBang("clear")
+  cp5.addBang("next")
     .setPosition(210, 50)
       .setSize(50, 30)
+
         .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+
+
           ; 
 
   cp5.addToggle("showAll")
@@ -74,12 +85,28 @@ void setup() {
                 .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
                   ;
 
-  cp5.addToggle("addUp")
+  cp5.addToggle("sparkling")
     .setPosition(340, 50)
-      .setSize(50, 30)
+      .setSize(60, 30)
         .setColorForeground(0x66ff1100)
           .setColorBackground(0xaaff1100)
             .setColorActive(0xaaff8800)
+              .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+                ; 
+  cp5.addToggle("one")
+    .setPosition(410, 50)
+      .setSize(50, 30)
+        .setColorForeground(0xaaccee00)
+          .setColorBackground(0xaacccc00)
+            .setColorActive(0xaaffee00)
+              .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+                ; 
+  cp5.addToggle("scroll")
+    .setPosition(470, 50)
+      .setSize(50, 30)
+        .setColorForeground(0xff11ff00)
+          .setColorBackground(0xff44bb00)
+            .setColorActive(0xffbbff00)
               .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
                 ; 
 
@@ -135,26 +162,29 @@ void draw() {
 
   background(255);
 
-  if (addUp==true) {
+  if (sparkling==true) {
 
     showAll=false;
+    one=false;
+    scroll=false;
     posx=width/2-100;
     posy=height/2-100; 
 
     for (int i=1;i<186;i++) {
-  
-      posx=width*2%(i+1)+noise(width/3,width/2)*random(255*i);
-      posy=height*2%(i+1)+noise(height/3,height/2)*random(255*i); 
-      posx=map(posx,0,255*i/1.52,0,width);
-      posy=map(posy,0,255*i/1.52,0,height);
+
+      posx=width*2%(i+1)+noise(width/3, width/2)*random(255*i);
+      posy=height*2%(i+1)+noise(height/3, height/2)*random(255*i); 
+      posx=map(posx, 0, 255*i/1.52, 0, width*2);
+      posy=map(posy, 0, 255*i/1.52, 0, height*2);
       stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
       countriesRoses[i].drawRose(posx, posy);
-      
     }
   }
 
   if (showAll==true) {
-    addUp=false;
+    sparkling=false;
+    one=false;
+    scroll=false;
     for (int i=0;i<186;i++) {
       posx= 200+ int((i%62)) * (2*9400)/62; // width-200=2*9400
       posy= 200+ int((i/62))* (900)/3; // height-300=900
@@ -164,15 +194,46 @@ void draw() {
 
       pushMatrix();
       scale(0.6);
+      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
       countriesRoses[i].drawRose(posx/10, posy);
       popMatrix();
     }
   } 
+  if ( one==true) {
+    sparkling=false;
+    showAll=false;
+    scroll=false;
+    for (int i=0;i<186;i++) {
+      posx= width/2-100;
+      posy= height/2-100;
+      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255, random(30, i));
+      countriesRoses[i].drawRose(posx, posy);
+    }
+  }
+  if ( scroll==true) {
+    sparkling=false;
+    showAll=false;
+    one=false;
+    posx= width/2-100;
+    posy= height/2-100;
+    float mx=constrain(mouseX, 35, width-35);
+    float pointer = map(mx, 35, width-35, 0, 185);
 
+    fill(sqrt(pointer*3)*pointer, abs(255-pointer*2.1), sqrt(300)*pointer/255);
+    ellipse(35, posy+100, 5, 5);
+    ellipse(width-35, posy+100, 5, 5);
+    ellipse(mx, posy+100, 5, 5);
+    textAlign(CENTER, CENTER);
+    textSize(13);
+    text("A", 20, posy+100);
+    text("Z", width-20, posy+100);
+    textSize(28);
+    text(countries[int(pointer)], width/2, posy+300);
+    stroke(sqrt(pointer*3)*pointer, abs(255-pointer*2.1), sqrt(300)*pointer/255);
 
-
-
-
+    line(35, posy+100, width-35, posy+100);
+    countriesRoses[int(pointer)].drawRose(posx, posy);
+  }
 
 
   int queryIndex;
@@ -181,10 +242,15 @@ void draw() {
   for (int i=0;i<countries.length;i++) {
     if (countries[i].equals(query)) {
       showAll=false;
+      scroll=false;
+      sparkling=false;
+      one=false;
       queryIndex=i;
       //      print(queryIndex);
       posx=width/2-100;
       posy=height/2-100;
+
+      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
       countriesRoses[queryIndex].drawRose(posx, posy);
     }
   }
@@ -197,12 +263,12 @@ void draw() {
  float ampvarAngLength=random(5000, 15000); e
  */
 void mousePressed() {
-  clear();
+  next();
   redraw();
   query=cp5.get(Textfield.class, "query").getText();
 }
 
-public void clear() {
+public void next() {
   cp5.get(Textfield.class, "query").clear();
 }
 
