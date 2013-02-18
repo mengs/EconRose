@@ -35,11 +35,12 @@ int colCount;
 float posx;
 float posy;
 
-//query variables
+//control variables
 String query = "";
 
 // Show all or not to show
 boolean  showAll = false;
+boolean  addUp = false;
 
 void setup() { 
 
@@ -72,6 +73,15 @@ void setup() {
               .setColorActive(0xffff0000)
                 .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
                   ;
+
+  cp5.addToggle("addUp")
+    .setPosition(340, 50)
+      .setSize(50, 30)
+        .setColorForeground(0x66ff1100)
+          .setColorBackground(0xaaff1100)
+            .setColorActive(0xaaff8800)
+              .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+                ; 
 
 
   textFont(font);
@@ -125,7 +135,26 @@ void draw() {
 
   background(255);
 
+  if (addUp==true) {
+
+    showAll=false;
+    posx=width/2-100;
+    posy=height/2-100; 
+
+    for (int i=1;i<186;i++) {
+  
+      posx=width*2%(i+1)+noise(width/3,width/2)*random(255*i);
+      posy=height*2%(i+1)+noise(height/3,height/2)*random(255*i); 
+      posx=map(posx,0,255*i/1.52,0,width);
+      posy=map(posy,0,255*i/1.52,0,height);
+      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
+      countriesRoses[i].drawRose(posx, posy);
+      
+    }
+  }
+
   if (showAll==true) {
+    addUp=false;
     for (int i=0;i<186;i++) {
       posx= 200+ int((i%62)) * (2*9400)/62; // width-200=2*9400
       posy= 200+ int((i/62))* (900)/3; // height-300=900
@@ -143,18 +172,20 @@ void draw() {
 
 
 
+
+
+
   int queryIndex;
   query=cp5.get(Textfield.class, "query").getText();
-  
+
   for (int i=0;i<countries.length;i++) {
     if (countries[i].equals(query)) {
       showAll=false;
       queryIndex=i;
-//      print(queryIndex);
+      //      print(queryIndex);
       posx=width/2-100;
       posy=height/2-100;
       countriesRoses[queryIndex].drawRose(posx, posy);
-
     }
   }
 }
@@ -174,3 +205,4 @@ void mousePressed() {
 public void clear() {
   cp5.get(Textfield.class, "query").clear();
 }
+
