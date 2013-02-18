@@ -1,4 +1,4 @@
-A Data Generative Art Project: Golbal Economy Rosalization
+A Data Generative Art Project: Global Economy Rosalization
 ========
 Visualizting Golbal Economy in the Forms of Rose-like Line Sketch
 
