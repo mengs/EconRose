@@ -5,6 +5,7 @@
  
  Meng Shi Feb 16, 2013
  lolaee@gmail.com
+ Master Student @ Tangible Interaction Design
  
  Project2 for course Interactive Art and Computational Design
  by Prof Golan Levin @ CMU School of Art
@@ -43,18 +44,29 @@ boolean  showAll = false;
 boolean  sparkling = false;
 boolean  one = false;
 boolean  scroll = false;
+boolean Golbal_Economy_Rosalization=false;
+
+// About Info variables
+int myColor;
+int c1, c2;
+float n, n1;
 
 
 void setup() { 
 
-  PFont font = createFont("arial", 15);
+
+
 
   cp5 = new ControlP5(this);
+
+  // change the default font to arial
+  PFont p = createFont("Trebuchet", 9);
+  cp5.setControlFont(p);
 
   cp5.addTextfield("query")
     .setPosition(20, 50)
       .setSize(180, 30)
-        .setFont(font)
+        .setFont(p)
           .setFocus(true)
             //            .setColor(0xbbff0000)
             .setColorBackground(0xffffffff)
@@ -104,6 +116,14 @@ void setup() {
   cp5.addToggle("scroll")
     .setPosition(470, 50)
       .setSize(50, 30)
+        .setColorForeground(0x66112200)
+          .setColorBackground(0x66992200)
+            .setColorActive(0x66dd2200)
+              .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+                ; 
+  cp5.addToggle("Golbal_Economy_Rosalization")
+    .setPosition(1280-250, 50)
+      .setSize(200, 30)
         .setColorForeground(0xff11ff00)
           .setColorBackground(0xff44bb00)
             .setColorActive(0xffbbff00)
@@ -111,7 +131,7 @@ void setup() {
                 ; 
 
 
-  textFont(font);
+  textFont(p);
 
   size(1280, 720);
   //  size(9400, 900);
@@ -167,6 +187,8 @@ void draw() {
     showAll=false;
     one=false;
     scroll=false;
+    Golbal_Economy_Rosalization=false;
+
     posx=width/2-100;
     posy=height/2-100; 
 
@@ -185,6 +207,8 @@ void draw() {
     sparkling=false;
     one=false;
     scroll=false;
+    Golbal_Economy_Rosalization=false;
+
     for (int i=0;i<186;i++) {
       posx= 200+ int((i%62)) * (2*9400)/62; // width-200=2*9400
       posy= 200+ int((i/62))* (900)/3; // height-300=900
@@ -203,6 +227,7 @@ void draw() {
     sparkling=false;
     showAll=false;
     scroll=false;
+    Golbal_Economy_Rosalization=false;
     for (int i=0;i<186;i++) {
       posx= width/2-100;
       posy= height/2-100;
@@ -214,6 +239,7 @@ void draw() {
     sparkling=false;
     showAll=false;
     one=false;
+    Golbal_Economy_Rosalization=false;
     posx= width/2-100;
     posy= height/2-100;
     float mx=constrain(mouseX, 35, width-35);
@@ -234,41 +260,76 @@ void draw() {
     line(35, posy+100, width-35, posy+100);
     countriesRoses[int(pointer)].drawRose(posx, posy);
   }
+  if (Golbal_Economy_Rosalization==true) {
+    fill(myColor);
+    myColor = lerpColor(c1, c2, n);
+    n += (1-n)* 0.05;
+    //    noStroke();
+    pushMatrix();
+    translate(width-250, 50);
+    int lineheight=15;
+    String[] aboutString= {"Golbal Economy Rosalization", "", "Visualizting Golbal Economy","in Terms of Rose-like Line Sketch","",
+        "Data Source", "  October 2012 World Economic Outlook ", "  IMF http://www.imf.org/", "", 
+      "Data Units:", "  GDP", "  Inflation", "  Population", "  Government Revenue ", "","Total sample","  185 Countries","","A Data Generative Art Project", "Spring 2013 IACD@CMU","Source Code","https://github.com/mengs/EconRose"};
+        for (int i=0;i<aboutString.length;i++) {
+        text(aboutString[i], 10, 50+lineheight*i);
+      }
+      popMatrix();
+    }
 
 
-  int queryIndex;
-  query=cp5.get(Textfield.class, "query").getText();
+    int queryIndex;
+    query=cp5.get(Textfield.class, "query").getText();
 
-  for (int i=0;i<countries.length;i++) {
-    if (countries[i].equals(query)) {
+    for (int i=0;i<countries.length;i++) {
+      if (countries[i].equals(query)) {
+        showAll=false;
+        scroll=false;
+        sparkling=false;
+        one=false;
+        Golbal_Economy_Rosalization=false;
+
+        queryIndex=i;
+        //      print(queryIndex);
+        posx=width/2-100;
+        posy=height/2-100;
+
+        stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
+        countriesRoses[queryIndex].drawRose(posx, posy);
+      }
+    }
+  }
+  /* This is a sample numbers helps translate the order of magnitude in the data
+   float radiusNoise=random(10); a 
+   float ampvarNoise=random(290);b 
+   float ampvarRadius=random(0.0, 0.05); c 
+   float ampvarRadiusNoise=random(0.25); d 
+   float ampvarAngLength=random(5000, 15000); e
+   */
+  void mousePressed() {
+    next();
+    redraw();
+    query=cp5.get(Textfield.class, "query").getText();
+  }
+
+  public void next() {
+    cp5.get(Textfield.class, "query").clear();
+  }
+  public void controlEvent(ControlEvent theEvent) {
+    n = 0;
+    if (Golbal_Economy_Rosalization==true) {
+
       showAll=false;
       scroll=false;
       sparkling=false;
       one=false;
-      queryIndex=i;
-      //      print(queryIndex);
-      posx=width/2-100;
-      posy=height/2-100;
 
-      stroke(sqrt(i*3)*i, abs(255-i*2.1), sqrt(300)*i/255);
-      countriesRoses[queryIndex].drawRose(posx, posy);
+      c1 = c2;
+      c2 = color(60);
+    }
+    else {
+      c1 = c2;
+      c2 = color(0, 160, 100);
     }
   }
-}
-/* This is a sample numbers helps translate the order of magnitude in the data
- float radiusNoise=random(10); a 
- float ampvarNoise=random(290);b 
- float ampvarRadius=random(0.0, 0.05); c 
- float ampvarRadiusNoise=random(0.25); d 
- float ampvarAngLength=random(5000, 15000); e
- */
-void mousePressed() {
-  next();
-  redraw();
-  query=cp5.get(Textfield.class, "query").getText();
-}
-
-public void next() {
-  cp5.get(Textfield.class, "query").clear();
-}
 
