@@ -1,6 +1,6 @@
 A Data Generative Art Project: Global Economy Rosalization
 ========
-Visualizting Golbal Economy in the Forms of Rose-like Line Sketch
+Visualizting Global Economy in the Forms of Rose-like Line Sketch
 
 Meng Shi Feb 16, 2013  lolaee@gmail.com 
 https://github.com/mengs/EconRose
